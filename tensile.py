@@ -14,11 +14,11 @@ class Tensile:
             self.range = self.get_load_cell_range()
         except Exception as e :
             raise e
-        self.speed = 10
+        self.speed = 0
 
     def connect_to_port(self, port, baudrate):
         self.active = True
-        return Serial(self.port, self.baudrate,timeout = 0.1)
+        return Serial(self.port, self.baudrate,timeout = 0.2)
    
     def get_load_cell_range(self):
         self.serial_port.write(b'RC\r')
@@ -41,6 +41,9 @@ class Tensile:
                     self.position_to_mm(raw_data[1]),
                     self.extenso_to_mm(raw_data[2])
                      )
+
+
+
          
         
         return tensile_output           
@@ -71,6 +74,7 @@ class Tensile:
         command = b'WV'+speed+b'\r'
       #  print(command)
         self.serial_port.write(command)
+
 
     def close(self):
         self.serial_port.close()
